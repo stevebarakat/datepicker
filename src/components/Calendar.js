@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import * as df from 'date-fns';
+import { v4 as uuidv4 } from 'uuid';
 import "./calendar.css";
 
 function Calendar() {
@@ -16,7 +17,7 @@ function Calendar() {
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth; i++) {
     blanks.push(
-      <td className="calendar-day empty">{""}</td>
+      <td key={uuidv4()} className="calendar-day empty">{""}</td>
     );
   };
 
@@ -49,7 +50,7 @@ function Calendar() {
   console.log(rows, cells, totalSlots);
 
   let daysinmonth = rows.map((d, i) => {
-    return <tr>{d}</tr>;
+    return <tr key={uuidv4()}>{d}</tr>;
   });
 
   console.log(daysinmonth);
