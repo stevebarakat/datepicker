@@ -3,3 +3,11 @@
   color: white;
   font-family: sans-serif;
 }
+
+.calendar-day {
+  border: 1px solid pink;
+}
+
+.today {
+  background: yellow;
+}

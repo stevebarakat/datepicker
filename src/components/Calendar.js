@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import * as df from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
-import "./calendar.css";
+// import "./calendar.css";
 
 function Calendar() {
   const weekdayshort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const firstDayOfMonth = df.getISODay(df.startOfMonth(Date.now()));
   const numDaysInMonth = df.getDaysInMonth(df.startOfMonth(Date.now()));
-  console.log(numDaysInMonth);
+  let currentDay = df.getDay(Date.now()) + 1;
+  console.log(currentDay);
 
   let weekdayshortname = weekdayshort.map(day => (
     <th key={day} className="week-day">{day}</th>
@@ -23,11 +24,11 @@ function Calendar() {
 
   let daysOfMonth = [];
   for (let d = 1; d <= numDaysInMonth; d++) {
+    currentDay = d === currentDay ? "today" : "";
     daysOfMonth.push(
-      <td key={d} className="calendar-day">
+      <td key={d} className={`calendar-day ${currentDay} }`}>
         {d}
-      </td>
-    );
+      </td>);
   }
 
   const totalSlots = [...blanks, ...daysOfMonth];
@@ -54,6 +55,9 @@ function Calendar() {
   });
 
   console.log(daysinmonth);
+
+  // let daysInMonth = [];
+  
 
 
 
