@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import React, { useState } from 'react';
 import * as df from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
+import './calendar.css';
 
 const currentDate = new Date();
 const thisMonth = currentDate.getMonth();
@@ -9,32 +9,19 @@ const thisDay = currentDate.getDate();
 const thisYear = currentDate.getFullYear();
 
 function Calendar() {
-  console.log(currentDate)
   const [date, setDate] = useState({
     month: thisMonth,
     day: thisDay,
     year: thisYear,
-  })
-  const currentSelectedYear = new Date(date.year.toString());
+  });
   const currentSelectedMonth = new Date(date.year.toString(), date.month.toString());
-  console.log(currentSelectedYear)
-  console.log(currentSelectedMonth)
-  const weekdayshort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  // const currentSelectedMonth = df.addMonths(currentDate, date.month - thisMonth);
-  const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
-  let today = thisMonth === parseInt(date.month) && 
-  thisYear === parseInt(date.year) ? date.day : null;
-  console.log(currentSelectedMonth)
-  console.log(date.month)
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
+  const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
+  let today = thisMonth === parseInt(date.month) &&
+    thisYear === parseInt(date.year) ? date.day : null;
 
-  console.log(thisMonth);
-  console.log(date.month)
-  console.log(thisYear);
-  console.log(date.year);
-  console.log(thisDay);
-
-  let weekdayshortname = weekdayshort.map(day => (
+  let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  daysOfWeek = daysOfWeek.map(day => (
     <th key={day} className="week-day">{day}</th>
   ));
 
@@ -47,7 +34,6 @@ function Calendar() {
 
   let daysOfMonth = [];
   for (let d = 1; d <= numDaysInMonth; d++) {
-    console.log(today)
     daysOfMonth.push(
       <td key={d} className={`calendar-day ${d === today ? "today" : "not-today"} }`}>
         {d}
@@ -71,7 +57,7 @@ function Calendar() {
     }
   });
 
-  let daysinmonth = rows.map((d) => {
+  let calendarRows = rows.map((d) => {
     return <tr key={uuidv4()}>{d}</tr>;
   });
 
@@ -102,22 +88,19 @@ function Calendar() {
         <option value={11}>December</option>
       </select>
 
-    <button onClick={() => setDate({
-      ...date,
-      year: date.year - 1
-    })}>-</button>
-    {date.year}
-    <button onClick={() => setDate({
-      ...date,
-      year: date.year + 1
-    })}>+</button>
-    {console.log(date.year)}
+      <button
+        onClick={() => setDate({ ...date, year: date.year - 1 })}
+      >-</button>
+      {date.year}
+      <button
+        onClick={() => setDate({ ...date, year: date.year + 1 })}
+      >+</button>
 
       <table className="calendar-day">
         <thead>
-          <tr>{weekdayshortname}</tr>
+          <tr>{daysOfWeek}</tr>
         </thead>
-        <tbody>{daysinmonth}</tbody>
+        <tbody>{calendarRows}</tbody>
       </table>
     </div>
   );
