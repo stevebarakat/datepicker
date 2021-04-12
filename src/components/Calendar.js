@@ -14,7 +14,7 @@ function Calendar() {
     day: thisDay,
     year: thisYear,
   });
-  const currentSelectedMonth = new Date(date.year.toString(), date.month.toString());
+  const currentSelectedMonth = new Date(date.year.toString(), date.month.toString(), date.day.toString());
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
   const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
   let today = thisMonth === parseInt(date.month) &&
@@ -58,9 +58,12 @@ function Calendar() {
   });
 
   let calendarRows = rows.map((d) => {
-    return <tr key={uuidv4()}>{d}</tr>;
+    return <tr onClick={e => setDate({
+      ...date,
+      day: e.target.innerText,
+    })} key={uuidv4()}>{d}</tr>;
   });
-
+  console.log(date)
   return (
     <div>
       <h1>Calendar</h1>
