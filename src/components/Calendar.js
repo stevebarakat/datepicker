@@ -5,11 +5,14 @@ import { v4 as uuidv4 } from 'uuid';
 // import "./calendar.css";
 
 function Calendar() {
+  const [selectedMonth, setSelectedMonth] = useState(parseInt(0));
+  const currentDate = Date.now();
   const weekdayshort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const firstDayOfMonth = df.getISODay(df.startOfMonth(Date.now()));
-  const numDaysInMonth = df.getDaysInMonth(df.startOfMonth(Date.now()));
-  let currentDay = df.getDay(Date.now()) + 1;
-  console.log(currentDay);
+  const numDaysInMonth = df.getDaysInMonth(currentDate);
+  let currentDay = df.getDay(currentDate) + 1;
+  const currentMonth = (df.getMonth(currentDate));
+  const currentSelectedMonth = df.addMonths(currentDate, selectedMonth - currentMonth);
+  const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
 
   let weekdayshortname = weekdayshort.map(day => (
     <th key={day} className="week-day">{day}</th>
@@ -48,22 +51,36 @@ function Calendar() {
     }
   });
 
-  console.log(rows, cells, totalSlots);
-
-  let daysinmonth = rows.map((d, i) => {
+  let daysinmonth = rows.map((d) => {
     return <tr key={uuidv4()}>{d}</tr>;
   });
-
-  console.log(daysinmonth);
-
-  // let daysInMonth = [];
-  
-
-
 
   return (
     <div>
       <h1>Calendar</h1>
+
+      <label htmlFor="pet-select">Month:</label>
+
+      <select
+        name="months"
+        id="month-select"
+        onChange={e => setSelectedMonth(e.target.value)}
+      >
+        <option value={0}>January</option>
+        <option value={1}>February</option>
+        <option value={2}>March</option>
+        <option value={3}>April</option>
+        <option value={4}>May</option>
+        <option value={5}>June</option>
+        <option value={6}>July</option>
+        <option value={7}>August</option>
+        <option value={8}>September</option>
+        <option value={8}>October</option>
+        <option value={10}>November</option>
+        <option value={11}>December</option>
+      </select>
+
+
       <table className="calendar-day">
         <thead>
           <tr>{weekdayshortname}</tr>
