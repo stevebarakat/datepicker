@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import * as df from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
-// import "./calendar.css";
+
+const currentDate = new Date();
 
 function Calendar() {
+  console.log(currentDate)
+  const [date, setDate] = useState({
+    month: null
+  })
   const [selectedMonth, setSelectedMonth] = useState(parseInt(0));
-  const currentDate = Date.now();
   const currentYear = (df.getYear(currentDate));
   const [selectedYear, setSelectedYear] = useState(parseInt(currentYear));
   const currentSelectedYear = new Date(selectedYear.toString());
@@ -15,10 +19,12 @@ function Calendar() {
   const currentMonth = (df.getMonth(currentDate));
   const currentSelectedMonth = df.addMonths(currentDate, selectedMonth - currentMonth);
   const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
-  let currentDay = df.getDay(currentDate) + 1;
+  const thisMonth = currentDate.getMonth();
+  const today = thisMonth === parseInt(selectedMonth) ? currentDate.getDate() : null;
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
 
-  console.log(currentYear)
+  console.log(thisMonth);
+  console.log(selectedMonth)
 
   let weekdayshortname = weekdayshort.map(day => (
     <th key={day} className="week-day">{day}</th>
@@ -33,9 +39,10 @@ function Calendar() {
 
   let daysOfMonth = [];
   for (let d = 1; d <= numDaysInMonth; d++) {
-    currentDay = d === currentDay ? "today" : "";
+    // today = d === today ? "today" : "not-today";
+    console.log(today)
     daysOfMonth.push(
-      <td key={d} className={`calendar-day ${currentDay} }`}>
+      <td key={d} className={`calendar-day ${d === today ? "today" : "not-today"} }`}>
         {d}
       </td>);
   }
