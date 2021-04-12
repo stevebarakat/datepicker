@@ -4,27 +4,35 @@ import * as df from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 
 const currentDate = new Date();
+const thisMonth = currentDate.getMonth();
+const thisDay = currentDate.getDate();
+const thisYear = currentDate.getFullYear();
 
 function Calendar() {
   console.log(currentDate)
   const [date, setDate] = useState({
-    month: null
+    month: thisMonth,
+    day: thisDay,
+    year: thisYear,
   })
-  const [selectedMonth, setSelectedMonth] = useState(parseInt(0));
-  const currentYear = (df.getYear(currentDate));
-  const [selectedYear, setSelectedYear] = useState(parseInt(currentYear));
-  const currentSelectedYear = new Date(selectedYear.toString());
+  const currentSelectedYear = new Date(date.year.toString());
+  const currentSelectedMonth = new Date(date.year.toString(), date.month.toString());
   console.log(currentSelectedYear)
+  console.log(currentSelectedMonth)
   const weekdayshort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const currentMonth = (df.getMonth(currentDate));
-  const currentSelectedMonth = df.addMonths(currentDate, selectedMonth - currentMonth);
+  // const currentSelectedMonth = df.addMonths(currentDate, date.month - thisMonth);
   const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
-  const thisMonth = currentDate.getMonth();
-  const today = thisMonth === parseInt(selectedMonth) ? currentDate.getDate() : null;
+  let today = thisMonth === parseInt(date.month) && 
+  thisYear === parseInt(date.year) ? date.day : null;
+  console.log(currentSelectedMonth)
+  console.log(date.month)
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
 
   console.log(thisMonth);
-  console.log(selectedMonth)
+  console.log(date.month)
+  console.log(thisYear);
+  console.log(date.year);
+  console.log(thisDay);
 
   let weekdayshortname = weekdayshort.map(day => (
     <th key={day} className="week-day">{day}</th>
@@ -39,7 +47,6 @@ function Calendar() {
 
   let daysOfMonth = [];
   for (let d = 1; d <= numDaysInMonth; d++) {
-    // today = d === today ? "today" : "not-today";
     console.log(today)
     daysOfMonth.push(
       <td key={d} className={`calendar-day ${d === today ? "today" : "not-today"} }`}>
@@ -76,7 +83,10 @@ function Calendar() {
       <select
         name="months"
         id="month-select"
-        onChange={e => setSelectedMonth(e.target.value)}
+        onChange={e => setDate({
+          ...date,
+          month: e.target.value,
+        })}
       >
         <option value={0}>January</option>
         <option value={1}>February</option>
@@ -92,10 +102,16 @@ function Calendar() {
         <option value={11}>December</option>
       </select>
 
-    <button onClick={() => setSelectedYear(selectedYear - 1)}>-</button>
-    {selectedYear}
-    <button onClick={() => setSelectedYear(selectedYear + 1)}>+</button>
-    {console.log(selectedYear)}
+    <button onClick={() => setDate({
+      ...date,
+      year: date.year - 1
+    })}>-</button>
+    {date.year}
+    <button onClick={() => setDate({
+      ...date,
+      year: date.year + 1
+    })}>+</button>
+    {console.log(date.year)}
 
       <table className="calendar-day">
         <thead>
