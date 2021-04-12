@@ -7,12 +7,18 @@ import { v4 as uuidv4 } from 'uuid';
 function Calendar() {
   const [selectedMonth, setSelectedMonth] = useState(parseInt(0));
   const currentDate = Date.now();
+  const currentYear = (df.getYear(currentDate));
+  const [selectedYear, setSelectedYear] = useState(parseInt(currentYear));
+  const currentSelectedYear = new Date(selectedYear.toString());
+  console.log(currentSelectedYear)
   const weekdayshort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const numDaysInMonth = df.getDaysInMonth(currentDate);
-  let currentDay = df.getDay(currentDate) + 1;
   const currentMonth = (df.getMonth(currentDate));
   const currentSelectedMonth = df.addMonths(currentDate, selectedMonth - currentMonth);
+  const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
+  let currentDay = df.getDay(currentDate) + 1;
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
+
+  console.log(currentYear)
 
   let weekdayshortname = weekdayshort.map(day => (
     <th key={day} className="week-day">{day}</th>
@@ -59,8 +65,7 @@ function Calendar() {
     <div>
       <h1>Calendar</h1>
 
-      <label htmlFor="pet-select">Month:</label>
-
+      <label htmlFor="month-select">Month:</label>
       <select
         name="months"
         id="month-select"
@@ -75,11 +80,15 @@ function Calendar() {
         <option value={6}>July</option>
         <option value={7}>August</option>
         <option value={8}>September</option>
-        <option value={8}>October</option>
+        <option value={9}>October</option>
         <option value={10}>November</option>
         <option value={11}>December</option>
       </select>
 
+    <button onClick={() => setSelectedYear(selectedYear - 1)}>-</button>
+    {selectedYear}
+    <button onClick={() => setSelectedYear(selectedYear + 1)}>+</button>
+    {console.log(selectedYear)}
 
       <table className="calendar-day">
         <thead>
