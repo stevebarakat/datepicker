@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './calendar.css';
 
 const currentDate = new Date();
-const thisMonth = currentDate.getMonth();
+const thisMonth = currentDate.getMonth() + 1;
 const thisDay = currentDate.getDate();
 const thisYear = currentDate.getFullYear();
 
@@ -35,7 +35,11 @@ function Calendar() {
   let daysOfMonth = [];
   for (let d = 1; d <= numDaysInMonth; d++) {
     daysOfMonth.push(
-      <td key={d} className={`calendar-day ${d === today ? "today" : "not-today"} }`}>
+      <td
+        key={d}
+        tabIndex={d}
+        className={`calendar-day ${d === today ? "today" : "not-today"} }`}
+      >
         {d}
       </td>);
   }
@@ -58,12 +62,16 @@ function Calendar() {
   });
 
   let calendarRows = rows.map((d) => {
-    return <tr onClick={e => setDate({
+    return <tr onFocus={e => setDate({
       ...date,
       day: parseInt(e.target.innerText),
     })} key={uuidv4()}>{d}</tr>;
   });
-  console.log(date)
+  console.log(date);
+  let tempDate = `${date.month}/${date.day}/${date.year}`;
+  console.log(tempDate);
+  var result = df.parse(tempDate, 'MM/dd/yyyy', new Date());
+  console.log(result);
   return (
     <div>
       <h1>Calendar</h1>
@@ -74,21 +82,21 @@ function Calendar() {
         id="month-select"
         onChange={e => setDate({
           ...date,
-          month: e.target.value,
+          month: parseInt(e.target.value) + 1,
         })}
       >
-        <option value={0}>January</option>
-        <option value={1}>February</option>
-        <option value={2}>March</option>
-        <option value={3}>April</option>
-        <option value={4}>May</option>
-        <option value={5}>June</option>
-        <option value={6}>July</option>
-        <option value={7}>August</option>
-        <option value={8}>September</option>
-        <option value={9}>October</option>
-        <option value={10}>November</option>
-        <option value={11}>December</option>
+        <option selected={date.month === 1} value={0}>January</option>
+        <option selected={date.month === 2} value={1}>February</option>
+        <option selected={date.month === 3} value={2}>March</option>
+        <option selected={date.month === 4} value={3}>April</option>
+        <option selected={date.month === 5} value={4}>May</option>
+        <option selected={date.month === 6} value={5}>June</option>
+        <option selected={date.month === 7} value={6}>July</option>
+        <option selected={date.month === 8} value={7}>August</option>
+        <option selected={date.month === 9} value={8}>September</option>
+        <option selected={date.month === 10} value={9}>October</option>
+        <option selected={date.month === 11} value={10}>November</option>
+        <option selected={date.month === 12} value={11}>December</option>
       </select>
 
       <button
@@ -105,6 +113,8 @@ function Calendar() {
         </thead>
         <tbody>{calendarRows}</tbody>
       </table>
+      {date.month}/{date.day}/{date.year}
+      {JSON.stringify(result)}
     </div>
   );
 }
