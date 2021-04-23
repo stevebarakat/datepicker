@@ -18,7 +18,7 @@ function Calendar() {
   const firstDayOfMonth = df.getISODay(df.startOfMonth(currentSelectedMonth));
   const numDaysInMonth = df.getDaysInMonth(currentSelectedMonth);
   let today = thisMonth === parseInt(date.month) &&
-    thisYear === parseInt(date.year) ? date.day : null;
+    thisYear === parseInt(date.year) ? thisDay : null;
 
   let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   daysOfWeek = daysOfWeek.map(day => (
@@ -38,7 +38,11 @@ function Calendar() {
       <td
         key={d}
         tabIndex={d}
-        className={`calendar-day ${d === today ? "today" : "not-today"} }`}
+        className={
+          `calendar-day 
+          ${d === today ? "today" : null} 
+          ${d === date.day ? "selected" : null}
+        }`}
       >
         {d}
       </td>);
