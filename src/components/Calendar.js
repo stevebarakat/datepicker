@@ -60,7 +60,7 @@ function Calendar() {
   let calendarRows = rows.map((d) => {
     return <tr onClick={e => setDate({
       ...date,
-      day: e.target.innerText,
+      day: parseInt(e.target.innerText),
     })} key={uuidv4()}>{d}</tr>;
   });
   console.log(date)
